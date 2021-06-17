@@ -1,4 +1,4 @@
-const { Pizza } = require('../models');
+ const { Pizza } = require('../models');
 const { db } = require('../models/Pizza');
 
 const pizzaController = {
@@ -6,6 +6,12 @@ const pizzaController = {
     // get all pizzas
     getAllPizza(req, res) {
         Pizza.find({})
+        .populate({
+            path: 'comments',
+            select: '-_v'
+        })
+        .select('-_v')
+        .sort({ _id: -1 })
         .then(dbPizzaData => res.json(dbPizzaData))
         .catch(err => {
             console.log(err);
